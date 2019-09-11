@@ -30,6 +30,11 @@
       <video id="cityserve-promo" autoplay="true" playsinline crossorigin="ananymous" loop="true"
         src="CityServe-Promo.mp4">
       </video>
+
+      <img id="heartpin-thumb" src="targets/HeartPinThumbnail.jpeg">
+      <video id="heartpin-promo" autoplay="true" playsinline crossorigin="ananymous" loop="true"
+        src="heartpin-promo.mp4">
+      </video>
     </a-assets>
 
     <a-camera position="0 4 10" raycaster="objects: .cantap" cursor="fuse: false; rayOrigin: mouse;">
@@ -42,6 +47,11 @@
     <!-- Note: "name:" must be set to the name of the image target uploaded to the 8th Wall Console -->
     <a-entity xrextras-named-image-target="name: CityServeInvite"
       xrextras-play-video="video: #cityserve-promo; thumb: #cityserve-thumb; canstop: true;"
+      geometry="primitive: plane; height: .7; width: 1.2;">
+    </a-entity>
+
+    <a-entity xrextras-named-image-target="name: HeartPin"
+      xrextras-play-video="video: #heartpin-promo; thumb: #heartpin-thumb; canstop: true;"
       geometry="primitive: plane; height: .7; width: 1.2;">
     </a-entity>
 

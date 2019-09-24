@@ -9,6 +9,10 @@
 
   <script src="//cdn.8thwall.com/web/aframe/8frame-0.9.0.min.js"></script>
 
+  <!-- https://github.com/nikolaiwarner/aframe-chromakey-material/blob/master/README.md -->
+  <script src="https://unpkg.com/aframe-chromakey-material/dist/aframe-chromakey-material.min.js"></script>
+
+
   <!-- XR Extras - provides utilities like load screen, almost there, and error handling.
          See github.com/8thwall/web/xrextras -->
   <script src="//cdn.8thwall.com/web/xrextras/xrextras.js"></script>
@@ -17,7 +21,6 @@
   <!-- LIVE API KEY -->
   <script
     src="//apps.8thwall.com/xrweb?appKey=mkGWDjEAEnwZ5PdLAbGgwJchOYkgNkbISiigLHX9Iw2pMehgvktFDGt48HXQPzmxnRkz2O"></script>
-
 </head>
 
 <body>
@@ -26,15 +29,12 @@
     xrextras-runtime-error>
 
     <a-assets>
-      <img id="cityserve-thumb" src="targets/CityServeThumbnail.jpeg">
-      <video id="cityserve-promo" autoplay="true" playsinline crossorigin="ananymous" loop="true"
-        src="CityServe-Promo.mp4">
+      <video id="cityserve-promo" autoplay playsinline crossorigin="ananymous" loop="true" src="CleanPin_1.mp4">
       </video>
 
-      <img id="heartpin-thumb" src="targets/HeartPinThumbnail.jpeg">
-      <video id="heartpin-promo" autoplay="true" playsinline crossorigin="ananymous" loop="true"
-        src="heartpin-promo.mp4">
+      <video id="heartpin-promo" autoplay playsinline crossorigin="ananymous" loop="true" src="heartpin-promo.mp4">
       </video>
+
     </a-assets>
 
     <a-camera position="0 4 10" raycaster="objects: .cantap" cursor="fuse: false; rayOrigin: mouse;">
@@ -46,13 +46,13 @@
 
     <!-- Note: "name:" must be set to the name of the image target uploaded to the 8th Wall Console -->
     <a-entity xrextras-named-image-target="name: CityServeInvite"
-      xrextras-play-video="video: #cityserve-promo; thumb: #cityserve-thumb; canstop: true;"
-      geometry="primitive: plane; height: .7; width: 1.2;">
+      xrextras-play-video="video: #cityserve-promo; canstop: true"
+      material="shader: chromakey; src: #cityserve-promo; color: 0.1 0.9 0.2"
+      geometry="primitive: plane; height: 1.5; width: 2.5;">
     </a-entity>
 
-    <a-entity xrextras-named-image-target="name: HeartPin"
-      xrextras-play-video="video: #heartpin-promo; thumb: #heartpin-thumb; canstop: true;"
-      geometry="primitive: plane; height: .7; width: 1.2;">
+    <a-entity xrextras-named-image-target="name: HeartPin" xrextras-play-video="video: #heartpin-promo; canstop: true"
+      geometry="primitive: plane; height: .5; width: .7;">
     </a-entity>
 
   </a-scene>

@@ -21,18 +21,51 @@
   <!-- LIVE API KEY -->
   <script
     src="//apps.8thwall.com/xrweb?appKey=mkGWDjEAEnwZ5PdLAbGgwJchOYkgNkbISiigLHX9Iw2pMehgvktFDGt48HXQPzmxnRkz2O"></script>
+
+  <script>
+    AFRAME.registerComponent('my-10-image-targets',
+      {
+        init:
+          function () {
+            // Load a custom set of image targets after 8th Wall has initialized
+            this.el.sceneEl.addEventListener('realityready',
+              () => {
+                XR.XrController.configure({
+                  imageTargets:
+                    ['CityServeInvite', 'HeartPin', 'cover', 'thrive', 'second', 'ray', 'heidi', 'reading', 'aim', 'mexico']
+                })
+              })
+          }
+      })
+  </script>
+
 </head>
 
 <body>
 
   <a-scene xrweb="disableWorldTracking: true" xrextras-gesture-detector xrextras-almost-there xrextras-loading
-    xrextras-runtime-error>
+    xrextras-runtime-error my-10-image-targets>
 
     <a-assets>
       <video id="cityserve-promo" autoplay playsinline crossorigin="ananymous" loop="true" src="CleanPin_1.mp4">
       </video>
 
       <video id="heartpin-promo" autoplay playsinline crossorigin="ananymous" loop="true" src="heartpin-promo.mp4">
+      </video>
+
+      <video id="golden1-promo" autoplay playsinline crossorigin="ananymous" loop="true" src="Golden 1_Book.mp4">
+      </video>
+
+      <video id="leataata-promo" autoplay playsinline crossorigin="ananymous" loop="true" src="Leataata_Book.mp4">
+      </video>
+
+      <video id="reading-promo" autoplay playsinline crossorigin="ananymous" loop="true" src="Reading.mp4">
+      </video>
+
+      <video id="aim-promo" autoplay playsinline crossorigin="ananymous" loop="true" src="AIM_Book.mp4">
+      </video>
+
+      <video id="mexico-promo" autoplay playsinline crossorigin="ananymous" loop="true" src="Mexico_Book.mp4">
       </video>
 
     </a-assets>
@@ -52,6 +85,38 @@
     </a-entity>
 
     <a-entity xrextras-named-image-target="name: HeartPin" xrextras-play-video="video: #heartpin-promo; canstop: true"
+      geometry="primitive: plane; height: .5; width: .7;">
+    </a-entity>
+
+    <a-entity xrextras-named-image-target="name: cover" xrextras-play-video="video: #golden1-promo; canstop: true"
+      geometry="primitive: plane; height: .5; width: .7;">
+    </a-entity>
+
+    <!-- <a-entity xrextras-named-image-target="name: thrive" xrextras-play-video="video: #thrive-promo; canstop: true"
+      geometry="primitive: plane; height: 1.5; width: 2.5;">
+    </a-entity> -->
+
+    <a-entity xrextras-named-image-target="name: second" xrextras-play-video="video: #leataata-promo; canstop: true"
+      geometry="primitive: plane; height: .5; width: .7;">
+    </a-entity>
+
+    <!-- <a-entity xrextras-named-image-target="name: ray" xrextras-play-video="video: #ray-promo; canstop: true"
+      geometry="primitive: plane; height: 1.5; width: 2.5;">
+    </a-entity> -->
+
+    <!-- <a-entity xrextras-named-image-target="name: heidi" xrextras-play-video="video: #heidi-promo; canstop: true"
+      geometry="primitive: plane; height: 1.5; width: 2.5;">
+    </a-entity> -->
+
+    <a-entity xrextras-named-image-target="name: reading" xrextras-play-video="video: #reading-promo; canstop: true"
+      geometry="primitive: plane; height: .5; width: .7;">
+    </a-entity>
+
+    <a-entity xrextras-named-image-target="name: aim" xrextras-play-video="video: #aim-promo; canstop: true"
+      geometry="primitive: plane; height: .5; width: .7;">
+    </a-entity>
+
+    <a-entity xrextras-named-image-target="name: mexico" xrextras-play-video="video: #mexico-promo; canstop: true"
       geometry="primitive: plane; height: .5; width: .7;">
     </a-entity>
 

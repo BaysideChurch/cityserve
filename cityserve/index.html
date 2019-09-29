@@ -22,6 +22,7 @@
   <script
     src="//apps.8thwall.com/xrweb?appKey=mkGWDjEAEnwZ5PdLAbGgwJchOYkgNkbISiigLHX9Iw2pMehgvktFDGt48HXQPzmxnRkz2O"></script>
 
+
   <script>
     AFRAME.registerComponent('my-10-image-targets',
       {
@@ -39,6 +40,90 @@
       })
   </script>
 
+  <script>
+
+    AFRAME.registerComponent('target-video', {
+      schema: {
+        name: { type: 'string' },
+        video: { type: 'string' },
+        thumb: { type: 'string' },
+        canstop: { type: 'bool' },
+      },
+      init: function () {
+        const object3D = this.el.object3D
+        const name = this.data.name
+        const v = document.querySelector(this.data.video)
+        const p = this.data.thumb && document.querySelector(this.data.thumb)
+        const el = this.el
+
+        setTimeout(() => {
+          object3D.visible = false
+          el.setAttribute('material', 'opacity', 0)
+        }, 150)
+
+
+        el.setAttribute('material', 'src', p || v)
+        el.setAttribute('class', 'cantap')
+        let playing = false
+
+        el.addEventListener('click', () => {
+          if (!playing) {
+            v.play()
+            playing = true
+          } else if (this.data.canstop) {
+            el.setAttribute('material', 'src', p || v)
+            v.pause()
+            playing = false
+          }
+        })
+
+        const showImage = ({ detail }) => {
+          if (name != detail.name) {
+            return
+          }
+          v.play()
+
+          el.setAttribute('animation', {
+            property: 'components.material.material.opacity',
+            dur: 800,
+            isRawProperty: true,
+            easing: 'easeInOutQuad',
+            loop: false,
+            to: '1'
+          })
+
+          object3D.position.copy(detail.position)
+          object3D.quaternion.copy(detail.rotation)
+          object3D.scale.set(detail.scale, detail.scale, detail.scale)
+          object3D.visible = true
+        }
+
+        const hideImage = ({ detail }) => {
+          if (name != detail.name) {
+            return
+          }
+          v.pause()
+          el.setAttribute('material', 'opacity', 0)
+          el.setAttribute('animation', {
+            property: 'components.material.material.opacity',
+            dur: 100,
+            isRawProperty: true,
+            easing: 'easeInOutQuad',
+            loop: false,
+            to: '0'
+          })
+          object3D.visible = false
+        }
+
+        this.el.sceneEl.addEventListener('xrimagefound', showImage)
+        this.el.sceneEl.addEventListener('xrimageupdated', showImage)
+        this.el.sceneEl.addEventListener('xrimagelost', hideImage)
+      }
+    })
+
+  </script>
+
+
 </head>
 
 <body>
@@ -53,27 +138,29 @@
       <video id="heartpin-promo" autoplay playsinline crossorigin="ananymous" loop="true" src="heartpin-promo.mp4">
       </video>
 
-      <video id="golden1-promo" autoplay playsinline crossorigin="ananymous" loop="false" src="Golden 1_Book.mp4">
+      <video id="golden1-promo" autoplay crossorigin="ananymous" loop="true" src="Golden 1_Book.mp4">
       </video>
 
-      <video id="thrive-promo" autoplay playsinline crossorigin="ananymous" loop="false" src="Thrive_Promo.mov">
+      <video id="thrive-promo" autoplay crossorigin="ananymous" loop="true" src="Thrive_Promo.mov">
       </video>
 
-      <video id="leataata-promo" autoplay playsinline crossorigin="ananymous" loop="false" src="Leataata_Book.mp4">
+      <video id="leataata-promo" autoplay crossorigin="ananymous" loop="true" src="Leataata_Book.mp4">
       </video>
 
-      <video id="reading-promo" autoplay playsinline crossorigin="ananymous" loop="false" src="Reading.mp4">
+      <video id="reading-promo" autoplay crossorigin="ananymous" loop="true" src="Reading.mp4">
       </video>
 
-      <video id="aim-promo" autoplay playsinline crossorigin="ananymous" loop="false" src="AIM_Book.mp4">
+      <video id="aim-promo" autoplay crossorigin="ananymous" loop="true" src="AIM_Book.mp4">
       </video>
 
-      <video id="mexico-promo" autoplay playsinline crossorigin="ananymous" loop="false" src="Mexico_Book.mp4">
+      <video id="mexico-promo" autoplay crossorigin="ananymous" loop="true" src="Mexico_Book.mp4">
       </video>
 
-      <video id="defending-promo" autoplay playsinline crossorigin="ananymous" loop="false" src="Defending-promo.mp4">
+      <video id="defending-promo" autoplay crossorigin="ananymous" loop="true" src="Defending-promo.mp4">
       </video>
 
+      <video id="ray-promo" autoplay crossorigin="ananymous" loop="true" src="Ray Book Video.mp4">
+      </video>
     </a-assets>
 
     <a-camera position="0 4 10" raycaster="objects: .cantap" cursor="fuse: false; rayOrigin: mouse;">
@@ -84,6 +171,7 @@
     <a-light type="ambient" intensity="1"></a-light>
 
     <!-- Note: "name:" must be set to the name of the image target uploaded to the 8th Wall Console -->
+
     <a-entity xrextras-named-image-target="name: CityServeInvite"
       xrextras-play-video="video: #cityserve-promo; canstop: true"
       material="shader: chromakey; src: #cityserve-promo; color: 0.1 0.9 0.2"
@@ -94,40 +182,41 @@
       geometry="primitive: plane; height: .5; width: .7;">
     </a-entity>
 
-    <a-entity xrextras-named-image-target="name: cover" xrextras-play-video="video: #golden1-promo; canstop: true"
+    <a-entity target-video="name: cover; video: #golden1-promo; canstop: true"
       geometry="primitive: plane; height: .8; width: 1;">
     </a-entity>
 
-    <a-entity xrextras-named-image-target="name: thrive" xrextras-play-video="video: #thrive-promo; canstop: true"
+    <a-entity target-video="name: thrive; video: #thrive-promo; canstop: true"
       geometry="primitive: plane; height: .7; width: 1;">
     </a-entity>
 
-    <a-entity xrextras-named-image-target="name: second" xrextras-play-video="video: #leataata-promo; canstop: true"
+    <a-entity target-video="name: second; video: #leataata-promo; canstop: true"
       geometry="primitive: plane; height: .5; width: .7;">
     </a-entity>
 
-    <!-- <a-entity xrextras-named-image-target="name: ray" xrextras-play-video="video: #ray-promo; canstop: true"
-      geometry="primitive: plane; height: 1.5; width: 2.5;">
-    </a-entity> -->
-
-    <a-entity xrextras-named-image-target="name: heidi" xrextras-play-video="video: #defending-promo; canstop: true"
+    <a-entity target-video="name: ray; video: #ray-promo; canstop: true"
       geometry="primitive: plane; height: .5; width: .7;">
     </a-entity>
 
-    <a-entity xrextras-named-image-target="name: reading" xrextras-play-video="video: #reading-promo; canstop: true"
+    <a-entity target-video="name: heidi; video: #defending-promo; canstop: true"
+      geometry="primitive: plane; height: .5; width: .7;">
+    </a-entity>
+
+    <a-entity target-video="name: reading; video: #reading-promo; canstop: true"
       geometry="primitive: plane; height: .7; width: .9;">
     </a-entity>
 
-    <a-entity xrextras-named-image-target="name: aim" xrextras-play-video="video: #aim-promo; canstop: true"
+    <a-entity ttarget-video="name: aim; video: #aim-promo; canstop: true"
       geometry="primitive: plane; height: .5; width: .7;">
     </a-entity>
 
-    <a-entity xrextras-named-image-target="name: mexico" xrextras-play-video="video: #mexico-promo; canstop: true"
+    <a-entity target-video="name: mexico; video: #mexico-promo; canstop: true"
       geometry="primitive: plane; height: .5; width: .7;">
     </a-entity>
 
   </a-scene>
 
 </body>
+
 
 </html>

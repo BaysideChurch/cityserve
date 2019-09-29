@@ -71,8 +71,6 @@
             v.play()
             playing = true
           } else if (this.data.canstop) {
-            el.setAttribute('material', 'src', p || v)
-            v.pause()
             playing = false
           }
         })
@@ -103,16 +101,16 @@
             return
           }
           v.pause()
-          el.setAttribute('material', 'opacity', 0)
+          object3D.visible = false
+
           el.setAttribute('animation', {
             property: 'components.material.material.opacity',
-            dur: 100,
+            dur: 800,
             isRawProperty: true,
             easing: 'easeInOutQuad',
             loop: false,
             to: '0'
           })
-          object3D.visible = false
         }
 
         this.el.sceneEl.addEventListener('xrimagefound', showImage)
@@ -206,7 +204,7 @@
       geometry="primitive: plane; height: .7; width: .9;">
     </a-entity>
 
-    <a-entity ttarget-video="name: aim; video: #aim-promo; canstop: true"
+    <a-entity target-video="name: aim; video: #aim-promo; canstop: true"
       geometry="primitive: plane; height: .5; width: .7;">
     </a-entity>
 

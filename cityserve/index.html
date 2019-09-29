@@ -40,8 +40,9 @@
       })
   </script>
 
-  <script>
 
+
+  <script>
     AFRAME.registerComponent('target-video', {
       schema: {
         name: { type: 'string' },
@@ -61,25 +62,33 @@
           el.setAttribute('material', 'opacity', 0)
         }, 150)
 
-
         el.setAttribute('material', 'src', p || v)
-        el.setAttribute('class', 'cantap')
-        let playing = false
 
-        el.addEventListener('click', () => {
-          if (!playing) {
-            v.play()
-            playing = true
-          } else if (this.data.canstop) {
-            playing = false
+        const foundImage = ({ detail }) => {
+          if (name != detail.name) {
+            return
           }
-        })
+          el.setAttribute('material', 'opacity', 0)
+
+          //console.log('FOUND')
+        }
 
         const showImage = ({ detail }) => {
           if (name != detail.name) {
             return
           }
           v.play()
+          v.onplay = () => {
+            el.setAttribute('class', 'cantap')
+            el.addEventListener('click', () => {
+              if (v.muted === true) {
+                v.muted = false;
+              } else {
+                v.muted = true;
+              }
+            })
+          }
+
 
           el.setAttribute('animation', {
             property: 'components.material.material.opacity',
@@ -89,11 +98,12 @@
             loop: false,
             to: '1'
           })
-
           object3D.position.copy(detail.position)
           object3D.quaternion.copy(detail.rotation)
           object3D.scale.set(detail.scale, detail.scale, detail.scale)
           object3D.visible = true
+
+          //console.log('TRACKING')
         }
 
         const hideImage = ({ detail }) => {
@@ -101,16 +111,23 @@
             return
           }
           v.pause()
-          object3D.visible = false
+          v.muted = true;
 
+
+
+
+          el.setAttribute('material', 'opacity', 0)
           el.setAttribute('animation', {
             property: 'components.material.material.opacity',
-            dur: 800,
+            dur: 100,
             isRawProperty: true,
             easing: 'easeInOutQuad',
             loop: false,
             to: '0'
           })
+
+          object3D.visible = false
+          //console.log('HIDDEN')
         }
 
         this.el.sceneEl.addEventListener('xrimagefound', showImage)
@@ -118,9 +135,7 @@
         this.el.sceneEl.addEventListener('xrimagelost', hideImage)
       }
     })
-
   </script>
-
 
 </head>
 
@@ -136,28 +151,28 @@
       <video id="heartpin-promo" autoplay playsinline crossorigin="ananymous" loop="true" src="heartpin-promo.mp4">
       </video>
 
-      <video id="golden1-promo" autoplay crossorigin="ananymous" loop="true" src="Golden 1_Book.mp4">
+      <video id="golden1-promo" autoplay muted crossorigin="ananymous" loop="true" src="Golden 1_Book.mp4">
       </video>
 
-      <video id="thrive-promo" autoplay crossorigin="ananymous" loop="true" src="Thrive_Promo.mov">
+      <video id="thrive-promo" autoplay muted crossorigin="ananymous" loop="true" src="Thrive_Promo.mov">
       </video>
 
-      <video id="leataata-promo" autoplay crossorigin="ananymous" loop="true" src="Leataata_Book.mp4">
+      <video id="leataata-promo" autoplay muted crossorigin="ananymous" loop="true" src="Leataata_Book.mp4">
       </video>
 
-      <video id="reading-promo" autoplay crossorigin="ananymous" loop="true" src="Reading.mp4">
+      <video id="reading-promo" autoplay muted crossorigin="ananymous" loop="true" src="Reading.mp4">
       </video>
 
-      <video id="aim-promo" autoplay crossorigin="ananymous" loop="true" src="AIM_Book.mp4">
+      <video id="aim-promo" autoplay muted crossorigin="ananymous" loop="true" src="AIM_Book.mp4">
       </video>
 
-      <video id="mexico-promo" autoplay crossorigin="ananymous" loop="true" src="Mexico_Book.mp4">
+      <video id="mexico-promo" autoplay muted crossorigin="ananymous" loop="true" src="Mexico_Book.mp4">
       </video>
 
-      <video id="defending-promo" autoplay crossorigin="ananymous" loop="true" src="Defending-promo.mp4">
+      <video id="defending-promo" autoplay muted crossorigin="ananymous" loop="true" src="Defending-promo.mp4">
       </video>
 
-      <video id="ray-promo" autoplay crossorigin="ananymous" loop="true" src="Ray Book Video.mp4">
+      <video id="ray-promo" autoplay muted crossorigin="ananymous" loop="true" src="Ray Book Video.mp4">
       </video>
     </a-assets>
 
@@ -180,35 +195,35 @@
       geometry="primitive: plane; height: .5; width: .7;">
     </a-entity>
 
-    <a-entity target-video="name: cover; video: #golden1-promo; canstop: true"
+    <a-entity target-video="name: cover; video: #golden1-promo; canstop: false"
       geometry="primitive: plane; height: .8; width: 1;">
     </a-entity>
 
-    <a-entity target-video="name: thrive; video: #thrive-promo; canstop: true"
+    <a-entity target-video="name: thrive; video: #thrive-promo; canstop: false"
       geometry="primitive: plane; height: .7; width: 1;">
     </a-entity>
 
-    <a-entity target-video="name: second; video: #leataata-promo; canstop: true"
+    <a-entity target-video="name: second; video: #leataata-promo; canstop: false"
       geometry="primitive: plane; height: .5; width: .7;">
     </a-entity>
 
-    <a-entity target-video="name: ray; video: #ray-promo; canstop: true"
+    <a-entity target-video="name: ray; video: #ray-promo; canstop: false"
       geometry="primitive: plane; height: .5; width: .7;">
     </a-entity>
 
-    <a-entity target-video="name: heidi; video: #defending-promo; canstop: true"
+    <a-entity target-video="name: heidi; video: #defending-promo; canstop: false"
       geometry="primitive: plane; height: .5; width: .7;">
     </a-entity>
 
-    <a-entity target-video="name: reading; video: #reading-promo; canstop: true"
+    <a-entity target-video="name: reading; video: #reading-promo; canstop: false"
       geometry="primitive: plane; height: .7; width: .9;">
     </a-entity>
 
-    <a-entity target-video="name: aim; video: #aim-promo; canstop: true"
+    <a-entity target-video="name: aim; video: #aim-promo; canstop: false"
       geometry="primitive: plane; height: .5; width: .7;">
     </a-entity>
 
-    <a-entity target-video="name: mexico; video: #mexico-promo; canstop: true"
+    <a-entity target-video="name: mexico; video: #mexico-promo; canstop: false"
       geometry="primitive: plane; height: .5; width: .7;">
     </a-entity>
 
